@@ -1,0 +1,51 @@
+{
+  "name": "pipeline-tester",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/SagivCohen/pipeline-tester#readme",
+  "bugs": {
+    "url": "https://github.com/SagivCohen/pipeline-tester/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SagivCohen/pipeline-tester.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "storybook dev -p 6006 -s public"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "conventional-changelog-angular": "^5.0.13",
+    "conventional-recommended-bump": "^6.1.0",
+    "execa": "^5.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.6.3",
+    "@storybook/addon-interactions": "^7.6.3",
+    "@storybook/addon-links": "^7.6.3",
+    "@storybook/addon-onboarding": "^1.0.9",
+    "@storybook/blocks": "^7.6.3",
+    "@storybook/react": "^7.6.3",
+    "@storybook/react-webpack5": "^7.6.3",
+    "@storybook/test": "^7.6.3",
+    "@vercel/ncc": "^0.34.0",
+    "eslint": "^8.19.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.4",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-storybook": "^0.6.15",
+    "jest": "^28.1.1",
+    "prop-types": "^15.8.1",
+    "storybook": "^7.6.3",
+    "nx": "18.0.4",
+    "@nx/eslint": "18.0.4"
+  }
+}
