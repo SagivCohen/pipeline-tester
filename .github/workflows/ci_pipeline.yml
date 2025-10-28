@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write # required for deployment to gh-pages
+
 jobs:
   cache-modules:
     runs-on: ubuntu-latest
