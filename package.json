@@ -15,19 +15,22 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test:unit": "vitest run",
     "storybook": "storybook dev -p 6006 -s public",
-    "build": "storybook build"
+    "build": "storybook build",
+    "dev": "vite"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
     "conventional-changelog-angular": "^5.0.13",
     "conventional-recommended-bump": "^6.1.0",
     "execa": "^5.1.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^18.1.1",
+    "react-dom": "^18.1.1",
+    "react-router-dom": "^7.9.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9.36.0",
     "@nx/eslint": "18.0.4",
     "@storybook/addon-essentials": "^7.6.3",
     "@storybook/addon-interactions": "^7.6.3",
@@ -37,16 +40,28 @@
     "@storybook/react": "^7.6.3",
     "@storybook/react-webpack5": "^7.6.3",
     "@storybook/test": "^7.6.3",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
     "@vercel/ncc": "^0.34.0",
-    "eslint": "^8.19.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "eslint": "^9.36.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.2.4",
     "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.22",
     "eslint-plugin-storybook": "^0.6.15",
+    "globals": "^16.4.0",
     "jest": "^28.1.3",
+    "jsdom": "^27.0.1",
     "nx": "18.0.4",
+    "or": "^0.2.0",
     "prop-types": "^15.8.1",
-    "storybook": "^7.6.3"
+    "storybook": "^7.6.3",
+    "vite": "^7.1.7",
+    "vitest": "^4.0.4"
   }
 }

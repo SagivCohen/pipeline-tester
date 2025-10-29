@@ -2,8 +2,8 @@ name: Hello CI
 
 on:
   push:
-    branches:
-      - hello
+    # branches:
+    #   - hello
 
 jobs:
   say-hello:
