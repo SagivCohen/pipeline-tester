@@ -15,7 +15,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test:unit": "vitest run",
+    "test:affected": ".github/scripts/run-affected-tests.sh",
     "storybook": "storybook dev -p 6006 -s public",
     "build": "storybook build",
     "dev": "vite"
