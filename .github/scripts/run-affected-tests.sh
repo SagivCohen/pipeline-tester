@@ -1,5 +1,8 @@
 changed_files=$(git diff --name-only origin/main...HEAD)
+echo "changed_files: $changed_files"
+
 feature_paths=()
+echo "feature_paths: $feature_paths"
 for file in $changed_files; do
   if [[ $file == src/features/featureA/* ]]; then
     feature_paths+=("src/features/featureA")
