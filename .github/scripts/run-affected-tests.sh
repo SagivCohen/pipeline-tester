@@ -20,7 +20,8 @@ for file in $changed_files; do
   fi
 
   # ב. שינוי בקובץ קומפוננטה משותפת
-  if [[ $file == src/components/* ]]; then
+  if [[ $file == stories/* ]]; then
+    echo "Found changed storybook file: $file"
     # בונה גרף תלויות
     deps=$(npx madge --json src | jq -r --arg f "$file" '
       to_entries
@@ -28,6 +29,7 @@ for file in $changed_files; do
       | .[].key
     ')
 
+    echo "Found dependencies: $deps"
     # מוסיף את כל הפיצ׳רים שתלויים בקובץ
     for dep in $deps; do
       if [[ $dep == src/features/* ]]; then

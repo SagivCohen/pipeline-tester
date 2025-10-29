@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from '../../../stories/Button';
+import { Button } from '../../components/Button/Button';
 
 function pageB() {
   const [value, setValue] = useState(0);
