@@ -29,7 +29,7 @@ jobs:
           node-version: 20
           cache: "npm"
       - run: npm ci
-      - run: npm test:affected
+      - run: npm run test:affected
 
   deploy-storybook:
     needs: cache-modules
