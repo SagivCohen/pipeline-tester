@@ -1,54 +1,52 @@
-#!/bin/bash
+#!/bin/bash 
+set -e 
 
-# Base branch להשוואה
-BASE_BRANCH="origin/main"
-
-# 1️⃣ קבצים שהשתנו
-changed_files=$(git diff --name-only $BASE_BRANCH...HEAD)
-
-echo "changed_files: $changed_files"
-
-# 2️⃣ איסוף feature paths להרצה
+echo "🔍 Detecting affected features..." 
+# Get changed files compared to main changed_files=$(git diff --name-only origin/main...HEAD) feature_paths=() test_files_to_run=() for file in $changed_files; do # Normalize path (remove leading ./ or src/) normalized_file="${file#./}" normalized_file="${normalized_file#src/}" # 1️⃣ If file is in a feature folder → add it directly if [[ $file == src/features/* ]]; then feature_dir=$(echo "$file" | grep -oE "src/features/[^/]+") feature_paths+=("$feature_dir") fi # 2️⃣ If file is in components → find who depends on it if [[ $file == src/components/* ]]; then echo "📦 Shared component changed: $file" # Include its own test files component_dir=$(dirname "$file") feature_paths+=("$component_dir") # Find dependents via madge deps=$(npx madge --json src --extensions ts,tsx,js,jsx | jq -r --arg f "$normalized_file" ' to_entries | map(select(.value | index($f))) | .[].key ') for dep in $deps; do if [[ $dep == features/* ]]; then feature_dir="src/$(echo "$dep" | grep -oE "features/[^/]+")" feature_paths+=("$feature_dir") fi done fi done # Remove duplicates unique_features=($(printf "%s\n" "${feature_paths[@]}" | sort -u)) if [ ${#unique_features[@]} -eq 0 ]; then echo "✅ No affected features detected. Skipping tests." exit 0 fi # Run tests for each affected feature or component for feature in "${unique_features[@]}"; do test_files_to_run+=("$feature") # npx vitest run "$feature" done echo "🧪 Running tests for $feature..." npx vitest run ${test_files_to_run[@]} echo "✅ Done!"
+changed_files=$(git diff --name-only origin/main...HEAD)
 feature_paths=()
-
-# 3️⃣ לכל קובץ שהשתנה
+test_files_to_run=()
 for file in $changed_files; do
-  # א. שינוי בקובץ feature
+  # Normalize path (remove leading ./ or src/)
+  normalized_file="${file#./}"
+  normalized_file="${normalized_file#src/}"
+
+  # 1️⃣ If file is in a feature folder → add it directly
   if [[ $file == src/features/* ]]; then
-    dir=$(dirname $file)
-    feature_paths+=("$dir")
+    feature_dir=$(echo "$file" | grep -oE "src/features/[^/]+")
+    feature_paths+=("$feature_dir")
   fi
 
-  # ב. שינוי בקובץ קומפוננטה משותפת
-  if [[ $file == stories/* ]]; then
-    echo "Found changed storybook file: $file"
-    # בונה גרף תלויות
-    deps=$(npx madge --json src | jq -r --arg f "$file" '
-      to_entries
-      | map(select(.value | index($f)))
-      | .[].key
-    ')
-
-    echo "Found dependencies: $deps"
-    # מוסיף את כל הפיצ׳רים שתלויים בקובץ
+  # 2️⃣ If file is in components → find who depends on it
+  if [[ $file == src/components/* ]]; then
+    echo "📦 Shared component changed: $file"
+    # Include its own test files
+    component_dir=$(dirname "$file")
+    feature_paths+=("$component_dir")
+    # Find dependents via madge
+    deps=$(npx madge --json src --extensions ts,tsx,js,jsx | jq -r --arg f "$normalized_file" ' to_entries | map(select(.value | index($f))) | .[].key ')
     for dep in $deps; do
-      if [[ $dep == src/features/* ]]; then
-        feature_paths+=("$dep")
+      if [[ $dep == features/* ]]; then
+        feature_dir="src/$(echo "$dep" | grep -oE "features/[^/]+")"
+        feature_paths+=("$feature_dir")
       fi
     done
   fi
 done
 
-# 4️⃣ הסרת כפילויות
-feature_paths=($(echo "${feature_paths[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
-
-# 5️⃣ הרצת Vitest אם יש פיצ׳רים שנפגעו
-if [ ${#feature_paths[@]} -eq 0 ]; then
-  echo "No affected feature tests to run. Skipping."
-else
-  echo "Running tests for affected features:"
-  for f in "${feature_paths[@]}"; do
-    echo " - $f"
-  done
-  npx vitest run ${feature_paths[@]}
+# Remove duplicates
+unique_features=($(printf "%s\n" "${feature_paths[@]}" | sort -u))
+if [ ${#unique_features[@]} -eq 0 ]; then
+  echo "✅ No affected features detected. Skipping tests."
+  exit 0
 fi
+
+# Run tests for each affected feature or component
+for feature in "${unique_features[@]}"; do
+  test_files_to_run+=("$feature")
+  # npx vitest run "$feature"
+done
+
+echo "🧪 Running tests for $feature..."
+npx vitest run ${test_files_to_run[@]}
+echo "✅ Done!"
