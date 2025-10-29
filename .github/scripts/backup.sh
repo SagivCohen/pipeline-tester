@@ -7,7 +7,6 @@ echo "🔍 Detecting affected features..."
 changed_files=$(git diff --name-only origin/main...HEAD)
 
 feature_paths=()
-test_files_to_run=()
 
 for file in $changed_files; do
   # Normalize path (remove leading ./ or src/)
@@ -54,10 +53,8 @@ fi
 
 # Run tests for each affected feature or component
 for feature in "${unique_features[@]}"; do
-  test_files_to_run+=("$feature")
-  # npx vitest run "$feature"
+  echo "🧪 Running tests for $feature..."
+  npx vitest run "$feature"
 done
 
-echo "🧪 Running tests for $feature..."
-npx vitest run ${test_files_to_run[@]}
 echo "✅ Done!"
