@@ -6,6 +6,8 @@ BASE_BRANCH="origin/main"
 # 1️⃣ קבצים שהשתנו
 changed_files=$(git diff --name-only $BASE_BRANCH...HEAD)
 
+echo "changed_files: $changed_files"
+
 # 2️⃣ איסוף feature paths להרצה
 feature_paths=()
 
